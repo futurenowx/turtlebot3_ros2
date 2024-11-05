@@ -1,0 +1,107 @@
+1. Source Installation
+
+How to install Turtlebot3 in ROS2 Humble
+
+Forked from https://ros2-industrial-workshop.readthedocs.io/en/latest/_source/navigation/ROS2-Turtlebot.html#simulation
+
+Step1:
+$ source /opt/ros/humble/setup.bash
+
+Step2:
+
+$ ros2 pkg list | grep turtlebot3
+
+Step3.
+prerequisites
+
+$ sudo apt install ros-humble-gazebo-*
+$ sudo apt install ros-humble-navigation2
+$ sudo apt install ros-humble-nav2-bringup
+$ sudo apt install ros-humble-slam-toolbox
+$ sudo apt install python3-vcstool
+
+Step4. Install from source 
+
+$ mkdir -p ~/turtlebot3_ws/src
+$ cd ~/turtlebot3_ws
+
+$ sudo gedit turtlebot3.repos
+
+add folowing repositories:
+
+  turtlebot3/turtlebot3:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/turtlebot3.git
+    version: humble-devel
+  turtlebot3/turtlebot3_msgs:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git
+    version: humble-devel
+  turtlebot3/turtlebot3_simulations:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
+    version: humble-devel
+  utils/DynamixelSDK:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/DynamixelSDK.git
+    version: humble-devel
+  utils/hls_lfcd_lds_driver:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/hls_lfcd_lds_driver.git
+    version: humble-devel
+        
+save control X
+
+$ vcs import < turtlebot3.repos
+$ cd ..
+
+$ sudo apt install ros-humble-gazebo-ros-pkgs
+
+$ source /opt/ros/humble/setup.bash
+$ colcon build --symlink-install
+
+$ source ./install/setup.bash
+
+
+Step5.Testing
+
+Now, export turtlebot3 model from the terminal (we use waffle_pi) —
+
+$ export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/turtlebot3_ws/src/turtlebot3/turtlebot3_simulations/turtlebot3_gazebo/models
+
+$ export TURTLEBOT3_MODEL=waffle_pi
+
+a. New Terminal run Turtlebot3
+
+$ source /opt/ros/humble/setup.bash
+$ cd ~/turtlebot3_ws
+$ ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py
+
+b. New Terminal run RVIZ2
+ 
+$ source /opt/ros/humble/setup.bash
+$ rviz2
+
+activate:
+- fixed frame (topic odom)
+- laserscan (topic scan)
+- map (topic map) 
+- TF (topic tf), 
+- image (image raw)
+
+(you can save the config for next start)
+
+c. New terminal run keyboard
+
+$ source /opt/ros/humble/setup.bash
+$ ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+d. see node tree
+
+$ source /opt/ros/humble/setup.bash
+$ ros2 run tf2_tools view_frames
+
+others
+$ ros2 topic list
+$ ros2 topic info topicname
+
