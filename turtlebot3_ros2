@@ -1,0 +1,53 @@
+How to install Turtlebot3 in ROS2 Humble
+
+Forked from https://ros2-industrial-workshop.readthedocs.io/en/latest/_source/navigation/ROS2-Turtlebot.html#simulation
+
+1. Non Source Installation
+
+Step1:
+$ source /opt/ros/humble/setup.bash
+
+Step2:
+$ ros2 pkg list | grep turtlebot3
+
+Step3:
+$ sudo apt install ros-humble-turtlebot3*
+
+2. Testing non Source Installation
+
+Step1: Export turtlebot3 model from the terminal (we use waffle_pi) —
+
+$ export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/opt/ros/humble/share/turtlebot3_gazebo/models
+
+$ export TURTLEBOT3_MODEL=waffle_pi (you can also use burger or waffle)
+
+Step2: Start Turtlebot3
+
+a. New Terminal run Turtlebot3
+
+source /opt/ros/humble/setup.bash
+ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py
+
+b. New Terminal run RVIZ2 
+
+$ source /opt/ros/humble/setup.bash
+$ rviz2
+
+activate:
+fixed frame (topic odom)
+laserscan (topic scan)
+map (topic map) 
+TF (topic tf), 
+image (image raw)
+(you can save the config for next start)
+
+c. New terminal run keyboard
+
+$ source /opt/ros/humble/setup.bash
+$ ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+d. to see node tree
+$ source /opt/ros/humble/setup.bash
+$ ros2 run tf2_tools view_frames
+
+
